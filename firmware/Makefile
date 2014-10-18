@@ -43,7 +43,6 @@ CFLAGS = -g -O$(OPT) \
 -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums \
 -Wall -Wstrict-prototypes \
 -DF_CPU=$(F_CPU) \
-`perl timedef.pl` \
 -Wa,-adhlns=$(<:.c=.lst) \
 $(patsubst %,-I%,$(EXTRAINCDIRS))
 
@@ -133,7 +132,7 @@ AVRDUDE_FLAGS = -p $(MCU) -P $(AVRDUDE_PORT) -c $(AVRDUDE_PROGRAMMER)
 # ---------------------------------------------------------------------------
 
 # Define directories, if needed.
-DIRAVR = c:/winavr
+DIRAVR = C:\WinAVR-20100110
 DIRAVRBIN = $(DIRAVR)/bin
 DIRAVRUTILS = $(DIRAVR)/utils/bin
 DIRINC = .
@@ -141,7 +140,7 @@ DIRLIB = $(DIRAVR)/avr/lib
 
 
 # Define programs and commands.
-SHELL = sh
+SHELL = bash
 
 CC = avr-gcc
 
