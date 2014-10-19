@@ -82,6 +82,7 @@ void display_date(uint8_t style);
 void display_str(char *s);
 void display_alarm(uint8_t h, uint8_t m);
 void display_timezone(int8_t h, uint8_t m);
+void display_gps(void);
 
 void set_time(void);
 void set_alarm(void);
@@ -115,6 +116,9 @@ uint8_t gpsdataready(void);
 void getgpstime(void);
 void setgpstime(char* str);
 void setgpsdate(char* str);
+void setgpslat(char* str, char dir);
+void setgpslong(char* str, char dir);
+void setgpssat(char *str);
 
 
 // displaymode
@@ -203,4 +207,4 @@ void setgpsdate(char* str);
 #define DIG_8 7
 #define DIG_9 3
 
-#define nop asm("nop")
+//#define nop asm("nop")
