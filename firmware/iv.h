@@ -46,6 +46,12 @@ THE SOFTWARE.
 #define MAXSNOOZE 600 // 10 minutes
 #define INACTIVITYTIMEOUT 10 // how many seconds we will wait before turning off menus
 
+#define BRIGHTNESS_MAX 90
+#define BRIGHTNESS_MIN 30
+#define BRIGHTNESS_INCREMENT 5
+
+#define PHOTOCELL_DARK 1010
+#define PHOTOCELL_LIGHT 500
 
 #define BEEP_8KHZ 5
 #define BEEP_4KHZ 10
@@ -58,7 +64,7 @@ THE SOFTWARE.
 #define EE_HOUR 4
 #define EE_MIN 5
 #define EE_SEC 6
-#define EE_ALARM_HOUR 7 
+#define EE_ALARM_HOUR 7
 #define EE_ALARM_MIN 8
 #define EE_BRIGHT 9
 #define EE_VOLUME 10
@@ -75,7 +81,11 @@ void clock_init(void);
 void initbuttons(void);
 void boost_init(uint8_t pwm);
 void vfd_init(void);
+void set_vfd_brightness(uint8_t brightness);
 void speaker_init(void);
+
+void dimmer_init(void);
+void dimmer_update(void);
 
 void display_time(uint8_t h, uint8_t m, uint8_t s);
 void display_date(uint8_t style);
@@ -83,6 +93,7 @@ void display_str(char *s);
 void display_alarm(uint8_t h, uint8_t m);
 void display_timezone(int8_t h, uint8_t m);
 void display_gps(void);
+void display_brightness(int brightness);
 
 void set_time(void);
 void set_alarm(void);
@@ -187,6 +198,12 @@ void setgpssat(char *str);
 #define SPK2 PB2
 #define SPK_PORT PORTB
 #define SPK_DDR DDRB
+
+#define DIMMER_POWER_PORT PORTC
+#define DIMMER_POWER_DDR DDRC
+#define DIMMER_POWER_PIN PC5
+#define DIMMER_SENSE_PIN MUX2
+#define DIMMER_SENSE_PIND ADC4D
 
 #define SEG_A 19
 #define SEG_B 17
