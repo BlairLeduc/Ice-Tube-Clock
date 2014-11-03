@@ -86,7 +86,7 @@ uint8_t currdigit = 0;        // which digit we are currently multiplexing
 const uint8_t digittable[] PROGMEM = {
 	DIG_9, DIG_8, DIG_7, DIG_6, DIG_5, DIG_4, DIG_3, DIG_2, DIG_1
 };
-PGM_P digittable_p PROGMEM = digittable;
+PGM_P const digittable_p PROGMEM = digittable;
 
 // This table allow us to index between what segment we want to light up
 // and what the pin number is on the MAX6921 see the .h for values.
@@ -94,7 +94,7 @@ PGM_P digittable_p PROGMEM = digittable;
 const uint8_t segmenttable[] PROGMEM = {
 	SEG_H, SEG_G, SEG_F, SEG_E, SEG_D, SEG_C, SEG_B, SEG_A
 };
-PGM_P segmenttable_p PROGMEM = segmenttable;
+PGM_P const segmenttable_p PROGMEM = segmenttable;
 
 // muxdiv and MUX_DIVIDER divides down a high speed interrupt (31.25KHz)
 // down so that we can refresh at about 100Hz (31.25KHz / 300)
@@ -142,7 +142,7 @@ void kickthedog(void) {
 }
 
 // called @ (F_CPU/256) = ~30khz (31.25 khz)
-SIGNAL(SIG_OVERFLOW0) {
+ISR(TIMER0_OVF_vect) {
 	// allow other interrupts to go off while we're doing display updates
 	sei();
 
@@ -204,7 +204,7 @@ volatile uint8_t last_buttonstate = 0, just_pressed = 0, pressed = 0;
 volatile uint8_t buttonholdcounter = 0;
 
 // This interrupt detects switches 1 and 3
-SIGNAL(SIG_PIN_CHANGE2) {
+ISR(PCINT2_vect) {
 	PCMSK2 = 0;
 	// allow interrupts while we're doing this
 	sei();
@@ -274,7 +274,7 @@ SIGNAL(SIG_PIN_CHANGE2) {
 }
 
 // Just button #2
-SIGNAL(SIG_PIN_CHANGE0) {
+ISR(PCINT0_vect) {
 	PCMSK0 = 0;
 	sei();
 	if (!(PINB & _BV(BUTTON2))) {
@@ -308,7 +308,7 @@ SIGNAL(SIG_PIN_CHANGE0) {
 volatile uint8_t timeoutcounter = 0;
 
 // this goes off once a second
-SIGNAL(TIMER2_OVF_vect) {
+ISR(TIMER2_OVF_vect) {
 	CLKPR = _BV(CLKPCE);  //MEME
 	CLKPR = 0;
 
@@ -351,7 +351,7 @@ SIGNAL(TIMER2_OVF_vect) {
 	}
 }
 
-SIGNAL(SIG_INTERRUPT0) {
+ISR(INT0_vect) {
 	EIMSK = 0;  //Disable this interrupt while we are processing it.
 	uart_putchar('i');
 	uint8_t x = ALARM_PIN & _BV(ALARM);
@@ -368,7 +368,7 @@ SIGNAL(SIG_INTERRUPT0) {
 
 
 
-SIGNAL(SIG_COMPARATOR) {
+ISR(ANALOG_COMP_vect) {
 	//DEBUGP("COMP");
 	if (ACSR & _BV(ACO)) {
 		//DEBUGP("HIGH");
@@ -404,7 +404,7 @@ SIGNAL(SIG_COMPARATOR) {
 
 
 // Update brightness once ADC measurement completes
-SIGNAL(SIG_ADC) {
+ISR(ADC_vect) {
 	uint8_t low, high;
 	unsigned int val;
 	if (brightness_level != 0)
